@@ -105,9 +105,3 @@ This project simulates how two parties (**Alice and Bob**) can securely exchange
 ## ⭐ Note
 
 This project is built for **learning and demonstration purposes** to understand the fundamentals of cryptography.
-
----
-
-If you want next:
-👉 I can give **resume bullet points for this project (very important for placements)**
-👉 Or **viva questions + answers based on this project 🔥**
