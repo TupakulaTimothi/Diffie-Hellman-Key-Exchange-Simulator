@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diffie-Hellman Interactive Simulator</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 { margin-bottom: 20px; }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #1e2a38;
+      padding: 20px;
+      border-radius: 12px;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    input {
+      width: 80%;
+      padding: 8px;
+      margin: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background: #00c6ff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00aaff;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .highlight {
+      color: #00ffcc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🔐 Diffie-Hellman Interactive Simulator</h1>
+
+<div class="container">
+
+  <div class="card">
+    <h3>🌍 Public Values</h3>
+    <input id="p" placeholder="Prime (p)" value="23">
+    <input id="g" placeholder="Generator (g)" value="5">
+  </div>
+
+  <div class="card">
+    <h3>👩 Alice</h3>
+    <input id="a" placeholder="Private Key (a)" value="6">
+    <p id="A"></p>
+  </div>
+
+  <div class="card">
+    <h3>👨 Bob</h3>
+    <input id="b" placeholder="Private Key (b)" value="15">
+    <p id="B"></p>
+  </div>
+
+</div>
+
+<button onclick="generate()">🔄 Generate Keys</button>
+<button onclick="randomize()">🎲 Random Values</button>
+
+<div class="result">
+  <p id="shared"></p>
+</div>
+
+<script>
+function modExp(base, exp, mod) {
+  let result = 1;
+  base = base % mod;
+  while (exp > 0) {
+    if (exp % 2 === 1) result = (result * base) % mod;
+    exp = Math.floor(exp / 2);
+    base = (base * base) % mod;
+  }
+  return result;
+}
+
+function generate() {
+  let p = parseInt(document.getElementById("p").value);
+  let g = parseInt(document.getElementById("g").value);
+  let a = parseInt(document.getElementById("a").value);
+  let b = parseInt(document.getElementById("b").value);
+
+  let A = modExp(g, a, p);
+  let B = modExp(g, b, p);
+
+  let secret1 = modExp(B, a, p);
+  let secret2 = modExp(A, b, p);
+
+  document.getElementById("A").innerHTML = "Public Key A: <span class='highlight'>" + A + "</span>";
+  document.getElementById("B").innerHTML = "Public Key B: <span class='highlight'>" + B + "</span>";
+
+  document.getElementById("shared").innerHTML =
+    "🔑 Shared Secret: <span class='highlight'>" + secret1 + "</span>";
+}
+
+function randomize() {
+  document.getElementById("a").value = Math.floor(Math.random() * 20) + 1;
+  document.getElementById("b").value = Math.floor(Math.random() * 20) + 1;
+}
+</script>
+
+</body>
+</html>
